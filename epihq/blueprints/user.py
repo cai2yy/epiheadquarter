@@ -40,3 +40,16 @@ def get_collection():
     return 1
 
 
+@user_bp.route('/crawler/close')
+def close_crawler():
+    # 管理员权限
+    # 停止抓取文章
+    return 1
+
+
+@user_bp.route('/crawler/open')
+def open_crawler():
+    # 管理员权限
+    # 继续抓取文章
+    return 1
+

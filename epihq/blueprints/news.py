@@ -1,4 +1,7 @@
-from flask import render_template, flash, redirect, url_for, Blueprint
+from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
+from flask_login import current_user
+from epihq.models import User, Article
+from epihq.extensions import db
 
 news_bp = Blueprint('news', __name__)
 
@@ -12,9 +15,21 @@ def train(article_id):
 
 @news_bp.route('/article/delete/<int:article_id>')
 def delete_article(article_id):
-    # 管理员用户权限
-    # 删除文章
-    return 1
+    """用户是否登录"""
+    if current_user.is_anonymous:
+        flash('请先登录')
+        return render_template('login')
+    else:
+        user = current_user
+        """用户是否为管理员"""
+        if not user.validate_admin:
+            flash('没有该权限')
+        else:
+            article = Article.query.filter_by(id=article_id).first()
+            db.session.delete(article)
+            db.session.commit()
+            flash("删除文章成功")
+            return render_template('news/home')
 
 
 @news_bp.route('/article/stick/<int:article_id>')
