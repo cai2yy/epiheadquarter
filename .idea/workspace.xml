@@ -1,23 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0f30ac26-873a-4067-9790-2a6340deef17" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/epihq/blueprints/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/const.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/crawler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/extensions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/epihq/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/epiheadquarter.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/epiheadquarter.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blueprints/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blueprints/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/news.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/blueprints/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
-    </list>
+    <list default="true" id="0f30ac26-873a-4067-9790-2a6340deef17" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,7 +121,7 @@
       <workItem from="1581581025010" duration="1036000" />
       <workItem from="1581582108265" duration="1235000" />
       <workItem from="1581583459654" duration="772000" />
-      <workItem from="1581584239349" duration="20095000" />
+      <workItem from="1581584239349" duration="20489000" />
     </task>
     <servers />
   </component>
@@ -178,10 +162,10 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="341" y="147" key="SettingsEditor/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581582420724" />
-    <state x="432" y="238" key="Vcs.Push.Dialog.v2" timestamp="1581584553832">
+    <state x="432" y="238" key="Vcs.Push.Dialog.v2" timestamp="1581610458009">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="432" y="238" key="Vcs.Push.Dialog.v2/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581584553832" />
+    <state x="432" y="238" key="Vcs.Push.Dialog.v2/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581610458009" />
     <state x="503" y="217" width="672" height="678" key="search.everywhere.popup" timestamp="1581594919348">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
