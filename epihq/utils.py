@@ -1,3 +1,4 @@
+# todo
 try:
     from urlparse import urlparse, urljoin
 except ImportError:
