@@ -5,6 +5,19 @@ import sys
 basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # SQLite URI compatible
+DIALECT = 'mysql'
+DRIVER = 'pymysql'
+USERNAME = 'root'
+PASSWORD = '19940712'
+HOST = '127.0.0.1'
+PORT = '3306'
+DATABASE = 'epihq'
+# mysql 不会认识utf-8,而需要直接写成utf8
+SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(DIALECT, DRIVER, USERNAME, PASSWORD, HOST,
+                                                                       PORT, DATABASE)
+SQLALCHEMY_TRACK_MODIFICATIONS = False
+SQLALCHEMY_COMMIT_TEARDOWN = True
+
 WIN = sys.platform.startswith('win')
 
 if WIN:
@@ -44,7 +57,7 @@ class BaseConfig(object):
 
 
 class DevelopmentConfig(BaseConfig):
-    SQLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data-dev.db')
+    QLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data-dev.db')
 
 
 class TestingConfig(BaseConfig):

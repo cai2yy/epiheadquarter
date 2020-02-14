@@ -9,7 +9,7 @@ from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     """
-    user为用户表
+    users为用户表
     id为userid
     username为用户名
     password_hash为加密密码
@@ -19,15 +19,16 @@ class User(db.Model, UserMixin):
     role为用户角色，0代表管理员，1代表个人用户，2代表公司用户
     """
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(20))
+    user_name = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
-    user_name = db.Column(db.String(30))
-    user_email = db.Column(db.String(30))
-    user_Phone = db.Column(db.Integer)
-    role_id = db.Column(db.Integer, db.ForeignKey('Role.id'))
+    name = db.Column(db.String(30))
+    email = db.Column(db.String(30))
+    phone = db.Column(db.String(30))
+    role_id = db.Column(db.Integer)
 
-    def __init__(self, username, password, name, email, phone, role_id):
-        self.username = username
+
+    def __init__(self, user_name, password, name, email, phone, role_id):
+        self.user_name = user_name
         self.password_hash = generate_password_hash(password)
         self.name = name
         self.email = email
@@ -35,7 +36,8 @@ class User(db.Model, UserMixin):
         self.role_id = role_id
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User %r>' % self.user_name
+
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -46,7 +48,7 @@ class User(db.Model, UserMixin):
     def validate_admin(self):
         return self.role_id == ADMIN_USER
 
-
+'''
 class Article(db.Model):
     __tablename__ = 'articles'
     """
@@ -97,3 +99,4 @@ class Role(db.Model):
     name = db.Column(db.String(16), unique=True)
 
     users = db.relationship('User', backref='role')
+'''

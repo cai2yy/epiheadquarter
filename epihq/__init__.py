@@ -12,8 +12,8 @@ from epihq.blueprints.user import user_bp
 from epihq.blueprints.auth import auth_bp
 from epihq.blueprints.news import news_bp
 from epihq.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate
-from epihq.models import User, Article, Comment, Role
-from epihq.config import config
+from epihq.models import User
+from epihq.config import config, SQLALCHEMY_DATABASE_URI
 from epihq.crawler import async_get_articles, async_get_patients_data
 from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
 
@@ -29,15 +29,17 @@ def create_app(config_name=None):
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
     app = Flask('epihq')
-    app.config.from_object(config[config_name])
-
-    register_logging(app)
+    # 连接本地数据库，测试临时用
+    app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
+    # register_logging(app)
     register_extensions(app)
     register_blueprints(app)
     register_commands(app)
-    register_errors(app)
+    # register_errors(app)
     register_shell_context(app)
-    register_template_context(app)
+    # register_template_context(app)
     register_request_handlers(app)
     register_crawler(app)
     return app
@@ -108,9 +110,9 @@ def register_template_context(app):
     """上下文处理器，注入dict映射使之所有的Templates中可见"""
     @app.context_processor
     def init_template_context():
-        admin = User.query.filter_by().first(role_id=ADMIN_USER)
+        admin = User.query.filter_by().first(role_id=0)
         if current_user.is_authenticated:
-            articles = Article.query.all().count()
+            articles = None
         else:
             articles = None
         return dict(
@@ -128,7 +130,7 @@ def register_commands(app):
     """在使用命令行启动程序时，通过附加参数调用该函数"""
     @app.cli.command()
     @click.option('--drop', is_flag=True, help='Create after drop.')
-    # 使用举例(在命令行中): >python main.py --drop
+    # 使用举例(在命令行中): >python xx.py --drop
     def initdb(drop):
         """Initialize the database."""
         if drop:

@@ -1,9 +1,16 @@
 from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
 from flask_login import current_user
-from epihq.models import User, Article
+from epihq.models import User
 from epihq.extensions import db
 
 news_bp = Blueprint('news', __name__)
+
+
+@news_bp.route('/sqltest')
+def sqltest():
+    user = User.query.filter_by().first()
+    print(user)
+    return user.user_name + " : " + user.name
 
 
 @news_bp.route('/train/<int:article_id>')

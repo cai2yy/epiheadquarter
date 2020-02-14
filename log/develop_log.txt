@@ -1,0 +1,8 @@
+sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table:
+users [SQL: 'SELECT users.id AS users_id, users.user_name AS users_user_name, users.password_hash AS users_password_hash, users.name AS users_name,
+users.email AS users_email, users.phone AS users_phone, users.role_id AS users_role_id \nFROM users \nWHERE users.id = ?']
+[parameters: (1,)] (Background on this error at: http://sqlalche.me/e/e3q8)
+
+
+ FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.
+ Set it to True or False to suppress this warning.

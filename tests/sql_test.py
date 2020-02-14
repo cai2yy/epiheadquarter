@@ -1,0 +1,4 @@
+from config import SQLALCHEMY_DATABASE_URI
+
+
+print(SQLALCHEMY_DATABASE_URI)
