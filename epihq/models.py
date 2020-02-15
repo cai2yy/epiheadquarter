@@ -116,6 +116,6 @@ class TrainResult(db.model):
     tags = db.Column(db.String(20))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    user = db.relationship('User', backref='comment')
+    user = db.relationship('User', backref='train_sets')
 
 # todo 用户-收藏表
