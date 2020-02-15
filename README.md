@@ -1,6 +1,6 @@
 ##### @version: v1.0
 ##### @date: 2.15
-# For Development
+# For Developer
 ## Tasks
 | Task | Engineer | Deadline |
 | ------ | ------ | ------ |
@@ -30,10 +30,12 @@
 ## Development Guide
 ### Backend API Develop
 #### 1. 落脚点操作:
+参考：[blueprints/auth.py](epihq/blueprints/auth.py) 尾部
 - 渲染当前页面，后面紧跟的是传参: `return render_template('user/marks.html', article=article)`
 - 跳转到上一个页面: `return redirect_back()`
 - 跳转到其他页面: `return redirect('/account/edit')`
 - 跳转到某个函数所在页面: `return redirect(url_for('news.home_article'))`
+
 ### Database
 #### 1 CRUD:
 参考：https://www.cnblogs.com/shangerzhong/articles/10381793.html

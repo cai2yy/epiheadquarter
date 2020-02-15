@@ -99,7 +99,7 @@ class Role(db.Model):
     user = db.relationship('User', backref='role')
 
 
-class TrainResult(db.model):
+class TrainResult(db.Model):
     # todo 结果项等，待完善
     __tablename__ = 'train_sets'
     """
@@ -111,7 +111,7 @@ class TrainResult(db.model):
     """
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(20))
-    text = db.Column(db.text)
+    text = db.Column(db.Text)
     entities = db.Column(db.String(20))
     tags = db.Column(db.String(20))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))

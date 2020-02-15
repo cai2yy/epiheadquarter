@@ -9,5 +9,3 @@ if os.path.exists(dotenv_path):
 from epihq import create_app  # noqa
 
 app = create_app('production')
-print(app.config)
-print(db)

@@ -70,7 +70,7 @@ def upload_training_set():
 
 
 @user_bp.route('/tasks')
-def my_training_set():
+def my_tasks():
     return render_template('user/tasks.html')
 
 

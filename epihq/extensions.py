@@ -8,6 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from flask_debugtoolbar import DebugToolbarExtension
 from flask_migrate import Migrate
+from flasgger import Swagger, swag_from
 
 
 # 初始化插件
@@ -20,6 +21,7 @@ mail = Mail()
 moment = Moment()
 toolbar = DebugToolbarExtension()
 migrate = Migrate()
+swagger = Swagger()
 
 
 @login_manager.user_loader

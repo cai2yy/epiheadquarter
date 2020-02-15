@@ -13,7 +13,7 @@ from epihq.blueprints.auth import auth_bp
 from epihq.blueprints.news import news_bp
 from epihq.blueprints.manager import manager_bp
 from epihq.blueprints.map import map_bp
-from epihq.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate
+from epihq.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate, swagger
 from epihq.models import User
 from epihq.config import config, SQLALCHEMY_DATABASE_URI
 from epihq.crawler import async_get_articles, async_get_patients_data
@@ -64,6 +64,7 @@ def register_extensions(app):
     moment.init_app(app)
     toolbar.init_app(app)
     migrate.init_app(app, db)
+    swagger.init_app(app)
 
 
 def register_blueprints(app):
