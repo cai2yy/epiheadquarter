@@ -11,6 +11,8 @@ from flask_wtf.csrf import CSRFError
 from epihq.blueprints.user import user_bp
 from epihq.blueprints.auth import auth_bp
 from epihq.blueprints.news import news_bp
+from epihq.blueprints.manager import manager_bp
+from epihq.blueprints.map import map_bp
 from epihq.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate
 from epihq.models import User
 from epihq.config import config, SQLALCHEMY_DATABASE_URI
@@ -54,8 +56,8 @@ def register_crawler(app):
 def register_extensions(app):
     """加载工具模块"""
     bootstrap.init_app(app)
-    db.init_app(app)
     login_manager.init_app(app)
+    db.init_app(app)
     csrf.init_app(app)
     ckeditor.init_app(app)
     mail.init_app(app)
@@ -69,6 +71,8 @@ def register_blueprints(app):
     app.register_blueprint(auth_bp)
     app.register_blueprint(user_bp)
     app.register_blueprint(news_bp)
+    app.register_blueprint(manager_bp)
+    app.register_blueprint(map_bp)
 
 
 def register_logging(app):

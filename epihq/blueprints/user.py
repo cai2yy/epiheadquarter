@@ -1,6 +1,5 @@
 from flask import render_template, flash, redirect, url_for, Blueprint
 
-
 user_bp = Blueprint('user', __name__)
 
 

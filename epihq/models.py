@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
     id为userid
     username为用户名
     password_hash为加密密码
-    name为用户真实姓名
+    name为用户昵称
     useremail为用户邮箱
     userPhone为用户的手机
     role为用户角色，0代表管理员，1代表个人用户，2代表公司用户
@@ -48,7 +48,7 @@ class User(db.Model, UserMixin):
     def validate_admin(self):
         return self.role_id == ADMIN_USER
 
-'''
+
 class Article(db.Model):
     __tablename__ = 'articles'
     """
@@ -66,6 +66,7 @@ class Article(db.Model):
     article_time = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     article_writer = db.Column(db.String(20))
     article_tag = db.Column(db.String(20))
+    marked = db.Column(db.Boolean)
 
 
 class Comment(db.Model):
@@ -80,11 +81,12 @@ class Comment(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     comment_body = db.Column(db.Text)
-    news_id = db.Column(db.Integer, db.ForeignKey('News.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('News.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    user_name = db.Column(db.String(30))
 
     users = db.relationship('User', backref='comment')
-    news = db.relationship('News', backref='comment')
+    articles = db.relationship('Article', backref='comment')
 
 
 class Role(db.Model):
@@ -99,4 +101,3 @@ class Role(db.Model):
     name = db.Column(db.String(16), unique=True)
 
     users = db.relationship('User', backref='role')
-'''
