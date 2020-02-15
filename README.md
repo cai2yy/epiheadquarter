@@ -35,7 +35,10 @@
 - 跳转到上一个页面: `return redirect_back()`
 - 跳转到其他页面: `return redirect('/account/edit')`
 - 跳转到某个函数所在页面: `return redirect(url_for('news.home_article'))`
-
+#### 2. Swagger API调试
+- 访问方法：http://127.0.0.1:5000/apidocs/
+- 后端写法：在函数体中写注释来启动该API的swagger调试功能，例：[blueprints/auth.py](epihq/blueprints/auth.py) 内的hello_swagger()函数
+****
 ### Database
 #### 1 CRUD:
 参考：https://www.cnblogs.com/shangerzhong/articles/10381793.html

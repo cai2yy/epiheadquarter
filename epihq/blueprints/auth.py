@@ -1,8 +1,9 @@
-from flask import render_template, flash, redirect, url_for, Blueprint
+import random
+from flask import render_template, flash, redirect, url_for, Blueprint, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from epihq.utils import redirect_back
 from epihq.forms import LoginForm
-from epihq.extensions import db
+from epihq.extensions import db, Swagger, swag_from
 from epihq.models import User
 
 auth_bp = Blueprint('auth', __name__)
@@ -58,6 +59,84 @@ def logout():
 """
 
 
+@auth_bp.route('/api/<string:language>/', methods=['GET'])
+def hello_swagger1(language):
+    """
+        Test
+        ---
+        tags:
+          - Test Swagger API
+        parameters:
+          - name: language
+            in: path
+            type: string
+            required: true
+            description: The language name
+          - name: size
+            in: query
+            type: integer
+            description: size of awesomeness
+        responses:
+          500:
+            description: Error The language is not awesome!
+          200:
+            description: A language with its awesomeness
+            schema:
+              id: awesome
+              properties:
+                language:
+                  type: string
+                  description: The language name
+                  default: Lua
+                features:
+                  type: array
+                  description: The awesomeness list
+                  items:
+                    type: string
+                  default: ["perfect", "simple", "lovely"]
+        """
+
+    language = language.lower().strip()
+    features = [
+        "awesome", "great", "dynamic",
+        "simple", "powerful", "amazing",
+        "perfect", "beauty", "lovely"
+    ]
+    size = int(request.args.get('size', 1))
+    if language in ['php', 'vb', 'visualbasic', 'actionscript']:
+        return "An error occurred, invalid language for awesomeness", 500
+    return jsonify(
+        language=language,
+        features=random.sample(features, size)
+    )
+
+
+@auth_bp.route('/hello/<string:word>')
+def hello_swagger2(word):
+    """
+            Test
+            ---
+            tags:
+              - Test Swagger API
+            parameters:
+              - name: word
+                in: path
+                type: string
+                required: true
+            responses:
+              500:
+                description: 错误！
+              200:
+                schema:
+                  id: 结果
+                  properties:
+                    sentence:
+                      type: string
+                      default: "yes!"
+            """
+    return "Hello,swagger" + word
+
+
 @auth_bp.route('/example')
 def example():
     if LoginForm:
@@ -72,11 +151,6 @@ def example():
     article = "fake_article"
     # 在当前url(/marks)，用括号里这个html文件渲染，后面紧跟的是传入前端页面的参数
     return render_template('user/marks.html', article=article)
-
-
-@auth_bp.route('/hello')
-def hello():
-    return "hello,world!"
 
 
 @auth_bp.route('/sqltest')
