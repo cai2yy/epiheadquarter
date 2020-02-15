@@ -9,7 +9,7 @@ from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     """
-    users为用户表
+    user为用户表
     id为userid
     username为用户名
     password_hash为加密密码
@@ -19,16 +19,15 @@ class User(db.Model, UserMixin):
     role为用户角色，0代表管理员，1代表个人用户，2代表公司用户
     """
     id = db.Column(db.Integer, primary_key=True)
-    user_name = db.Column(db.String(20))
+    username = db.Column(db.String(20))
     password_hash = db.Column(db.String(128))
-    name = db.Column(db.String(30))
-    email = db.Column(db.String(30))
-    phone = db.Column(db.String(30))
-    role_id = db.Column(db.Integer)
+    user_name = db.Column(db.String(30))
+    user_email = db.Column(db.String(30))
+    user_Phone = db.Column(db.String(30))
+    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
-
-    def __init__(self, user_name, password, name, email, phone, role_id):
-        self.user_name = user_name
+    def __init__(self, username, password, name, email, phone, role_id):
+        self.username = username
         self.password_hash = generate_password_hash(password)
         self.name = name
         self.email = email
@@ -36,8 +35,7 @@ class User(db.Model, UserMixin):
         self.role_id = role_id
 
     def __repr__(self):
-        return '<User %r>' % self.user_name
-
+        return '<User %r>' % self.username
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -48,7 +46,7 @@ class User(db.Model, UserMixin):
     def validate_admin(self):
         return self.role_id == ADMIN_USER
 
-'''
+
 class Article(db.Model):
     __tablename__ = 'articles'
     """
@@ -80,11 +78,11 @@ class Comment(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     comment_body = db.Column(db.Text)
-    news_id = db.Column(db.Integer, db.ForeignKey('News.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('User.id'))
+    news_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
-    users = db.relationship('User', backref='comment')
-    news = db.relationship('News', backref='comment')
+    user = db.relationship('User', backref='comment')
+    article = db.relationship('Article', backref='comment')
 
 
 class Role(db.Model):
@@ -98,5 +96,19 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), unique=True)
 
-    users = db.relationship('User', backref='role')
-'''
+    user = db.relationship('User', backref='role')
+
+class OneNewsForTrain(db.model):
+    __tablename__ = 'transets'
+    '''
+    Transet为训练集
+    title为标题
+    text为文本
+    person_entitys为实体集，即实体标签
+    tags为标签
+    '''
+    id = db.Column(db.INTEGER, primary_key=True)
+    title = db.Column(db.String(20))
+    text = db.Column(db.text)
+    person_entitys = db.Column(db.String(20))
+    tags = db.Column(db.String(20))

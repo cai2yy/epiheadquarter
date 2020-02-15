@@ -9,7 +9,7 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('blog.index'))
+        return redirect(url_for('auth.index'))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -25,7 +25,7 @@ def login():
             flash('Invalid username or password.', 'warning')
         else:
             flash('No account.', 'warning')
-    return render_template('auth/login.html', form=form)
+    return render_template('auth/indexTemp.html', form=form)
 
 
 @auth_bp.route('/logout')
