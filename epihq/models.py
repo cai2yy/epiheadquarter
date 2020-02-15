@@ -52,11 +52,11 @@ class Article(db.Model):
     """
     article为新闻表
     id为新闻id
-    news_title为新闻标题
-    news_content为新闻内容
-    news_time为新闻发表时间
-    news_writer为新闻作者
-    news_tag为新闻标签
+    article_title为新闻标题
+    article_content为新闻内容
+    article_time为新闻发表时间
+    article_writer为新闻作者
+    article_tag为新闻标签
     """
     id = db.Column(db.Integer, primary_key=True)
     article_title = db.Column(db.Text)
@@ -72,13 +72,13 @@ class Comment(db.Model):
     comment为新闻评论表
     id为评论id
     comment_body为评论内容
-    news_id为外键，指向News表中的id
+    article_id为外键，指向News表中的id
     user_id为外键，指向user表中的id
     users和news为两个关联引用
     """
     id = db.Column(db.Integer, primary_key=True)
     comment_body = db.Column(db.Text)
-    news_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     user = db.relationship('User', backref='comment')
