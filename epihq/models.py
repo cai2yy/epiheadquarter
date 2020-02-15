@@ -10,11 +10,11 @@ class User(db.Model, UserMixin):
     __tablename__ = 'users'
     """
     user为用户表
-    id为userid
+    id为用户id
     username为用户名
     password_hash为加密密码
     name为用户真实姓名
-    useremail为用户邮箱
+    user_email为用户邮箱
     userPhone为用户的手机
     role为用户角色，0代表管理员，1代表个人用户，2代表公司用户
     """
@@ -98,17 +98,24 @@ class Role(db.Model):
 
     user = db.relationship('User', backref='role')
 
-class OneNewsForTrain(db.model):
-    __tablename__ = 'transets'
-    '''
+
+class TrainResult(db.model):
+    # todo 结果项等，待完善
+    __tablename__ = 'train_sets'
+    """
     Transet为训练集
     title为标题
     text为文本
     person_entitys为实体集，即实体标签
     tags为标签
-    '''
+    """
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(20))
     text = db.Column(db.text)
-    person_entitys = db.Column(db.String(20))
+    entities = db.Column(db.String(20))
     tags = db.Column(db.String(20))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    user = db.relationship('User', backref='comment')
+
+# todo 用户-收藏表

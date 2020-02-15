@@ -1,54 +1,95 @@
-from flask import render_template, flash, redirect, url_for, Blueprint
+from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
+from flask_login import current_user
+from epihq.models import User, Article, Comment, Role
+from epihq.extensions import db
+from epihq.forms import CommentForm
+from epihq.utils import redirect_back
 
 user_bp = Blueprint('user', __name__)
 
+"""
+账户模块
+@author: 
+@time: 
+"""
 
-@user_bp.route('/upload', methods=['POST'])
+
+@user_bp.route('/account')
+def my_account():
+    # todo 账户详情页
+    return render_template('user/account.html')
+
+
+@user_bp.route('/account/edit')
+def edit_account():
+    # todo 编辑账户信息
+    return render_template('user/edit.html')
+
+
+@user_bp.route('/account/edit/save')
+def save_account():
+    # todo 编辑账户，提交表单信息到数据库
+    return redirect(url_for('.my_account'))
+
+
+"""
+收藏模块
+@author: 
+@time: 
+"""
+
+
+@user_bp.route('/marks')
+def my_marks():
+    return render_template('user/marks.html')
+
+
+"""
+训练集模块
+@author: 
+@time: 
+"""
+
+
+@user_bp.route('/trainings')
+def my_training_set():
+    return render_template('user/trainings.html')
+
+
+@user_bp.route('/trainings/upload')
 def upload_training_set():
-    # 公司用户权限
-    # 接受训练集文件并上传
-    # 等待训练结束更改用户当前状态
-    return 1
+    # FTP操作
+    return 'fuck sky'
 
 
-@user_bp.route('/trainingset')
-def get_training_set_status():
-    # 公司用户权限
-    # 查看该用户的训练集训练状态
-    return 1
+"""
+训练任务模块
+@author: 
+@time: 
+"""
 
 
-@user_bp.route('/results')
-def get_training_results():
-    # 公司用户权限
-    # 查看该用户的文章训练结果
-    return 1
+@user_bp.route('/tasks')
+def my_training_set():
+    return render_template('user/tasks.html')
 
 
-@user_bp.route('/results/download/<int:result_id>')
-def download_result(result_id):
-    # 公司用户权限
-    # 下载文章训练结果
-    return 1
+@user_bp.route('/tasks/run/<int:task_id>')
+def training_run(task_id):
+    return redirect_back()
 
 
-@user_bp.route('/collection')
-def get_collection():
-    # 普通用户权限
-    # 查看用户收藏文章
-    return 1
+@user_bp.route('/tasks/stop/<int:task_id>')
+def training_stop(task_id):
+    return redirect_back()
 
 
-@user_bp.route('/crawler/close')
-def close_crawler():
-    # 管理员权限
-    # 停止抓取文章
-    return 1
+@user_bp.route('/tasks/delete/<int:task_id>')
+def training_delete(task_id):
+    return redirect_back()
 
 
-@user_bp.route('/crawler/open')
-def open_crawler():
-    # 管理员权限
-    # 继续抓取文章
-    return 1
-
+@user_bp.route('/tasks/result/<int:task_id>')
+# 应当满足一定条件：任务训练结束后出现
+def training_result(task_id):
+    return render_template('user/result.html')

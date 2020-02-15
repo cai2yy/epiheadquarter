@@ -8,6 +8,11 @@ from epihq.utils import redirect_back
 manager_bp = Blueprint('manager', __name__)
 
 
+"""
+------------------留待第二次迭代------------------
+"""
+
+
 @manager_bp.route('/manager')
 def home_article():
     return render_template('manager/home.html')

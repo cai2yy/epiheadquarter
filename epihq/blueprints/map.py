@@ -8,11 +8,19 @@ from epihq.utils import redirect_back
 map_bp = Blueprint('map', __name__)
 
 
+"""
+地图模块（默认页面）
+@author: 
+@time: 
+"""
+
+
 @map_bp.route('/')
 def index():
+    # todo 首页
     return render_template('index.html')
 
 
 @map_bp.route('/map')
 def home_map():
-    return render_template('index.html')
+    return redirect('/')
