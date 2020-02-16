@@ -9,7 +9,7 @@ from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
 class User(db.Model, UserMixin):
     __tablename__ = 'users'
     """
-    user为用户表
+    用户表
     id为用户id
     username为用户名
     password_hash为加密密码
@@ -25,6 +25,8 @@ class User(db.Model, UserMixin):
     user_email = db.Column(db.String(30))
     user_phone = db.Column(db.String(30))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     def __init__(self, username, password, name, email, phone, role_id):
         self.username = username
@@ -50,7 +52,7 @@ class User(db.Model, UserMixin):
 class Article(db.Model):
     __tablename__ = 'articles'
     """
-    article为新闻表
+    新闻表
     id为新闻id
     article_title为新闻标题
     article_content为新闻内容
@@ -64,15 +66,39 @@ class Article(db.Model):
     article_time = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     article_writer = db.Column(db.String(20))
     article_tag = db.Column(db.String(20))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+
+class Mark(db.Model):
+    __tablename__ = 'marks'
+    """
+    收藏表，是users-articles的一个连接表
+    id为收藏项id
+    article_id为外键，指向articles表中的id
+    user_id为外键，指向user表中的id
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    user = db.relationship('User', backref='marks')
+    article = db.relationship('Article', backref='marks')
+
+    def __init__(self, user_id, article_id):
+        self.user_id = user_id
+        self.article_id = article_id
 
 
 class Comment(db.Model):
     __tablename__ = 'comments'
     """
-    comment为新闻评论表
+    新闻评论表
     id为评论id
     comment_body为评论内容
-    article_id为外键，指向News表中的id
+    article_id为外键，指向articles表中的id
     user_id为外键，指向user表中的id
     users和news为两个关联引用
     """
@@ -80,6 +106,8 @@ class Comment(db.Model):
     comment_body = db.Column(db.Text)
     article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     user = db.relationship('User', backref='comment')
     article = db.relationship('Article', backref='comment')
@@ -88,7 +116,7 @@ class Comment(db.Model):
 class Role(db.Model):
     __tablename__ = 'roles'
     """
-    Role为角色表
+    角色表
     id为角色id
     name为角色名，共有三类
     和users添加关系引用
@@ -99,23 +127,56 @@ class Role(db.Model):
     user = db.relationship('User', backref='role')
 
 
-class TrainResult(db.Model):
-    # todo 结果项等，待完善
+class NLP(db.Model):
+    __tablename__ = 'nlp'
+    """
+    用户-NLP程序表 1 <-> 1
+    description为用户添加的备注
+    user_id为外键，指向user表中的id
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    user = db.relationship('User', backref='nlp')
+
+
+class TrainSet(db.Model):
     __tablename__ = 'train_sets'
     """
-    Transet为训练集
+    NLP程序-训练集表 1 <-> N
+    set_content为用户上传的训练集
+    nlp_id为外键，指向nlp表中的id
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    set_name = db.Column(db.String(20))
+    set_content = db.Column(db.Text)
+    nlp_id = db.Column(db.Integer, db.ForeignKey('nlp.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    nlp = db.relationship('NLP', backref='train_sets')
+
+
+class TrainResult(db.Model):
+    # todo 待完善
+    __tablename__ = 'train_results'
+    """
+    NLP程序-训练结果表 1 <-> N
     title为标题
     text为文本
-    person_entitys为实体集，即实体标签
+    entities为实体集，即实体标签
     tags为标签
     """
-    id = db.Column(db.INTEGER, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(20))
     text = db.Column(db.Text)
     entities = db.Column(db.String(20))
     tags = db.Column(db.String(20))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    nlp_id = db.Column(db.Integer, db.ForeignKey('nlp.id'))
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    user = db.relationship('User', backref='train_sets')
-
-# todo 用户-收藏表
+    nlp = db.relationship('NLP', backref='train_results')
