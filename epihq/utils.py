@@ -28,3 +28,5 @@ def redirect_back(default='index', **kwargs):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in current_app.config['BLUELOG_ALLOWED_IMAGE_EXTENSIONS']
+
+# 判断手机号是否重复注册

@@ -44,6 +44,7 @@ def create_app(config_name=None):
     # register_template_context(app)
     register_request_handlers(app)
     register_crawler(app)
+    app.secret_key = 'helloSb'
     return app
 
 
