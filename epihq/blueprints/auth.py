@@ -2,9 +2,9 @@ import random
 from flask import render_template, flash, redirect, url_for, Blueprint, request, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from epihq.utils import redirect_back
-from epihq.forms import LoginForm
+from epihq.forms import LoginForm,SettingForm,SignIn
 from epihq.extensions import db, Swagger, swag_from
-from epihq.models import User
+from epihq.models import User,Role
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -16,28 +16,48 @@ auth_bp = Blueprint('auth', __name__)
 """
 
 
-@auth_bp.route('/sign')
+@auth_bp.route('/signIn', methods = ['GET', 'POST'])
 def sign_in():
-    # todo 注册
-    return render_template('auth/sign.html')
+    form = SignIn()
+    print(form)
+    print(request.method)
+    if request.method == 'POST':
+        print('**************************')
+        username = request.form.get('username')
+        password = request.form.get('password')
+        passwordConfirm = request.form.get('passwordConfirm')
+        user_name = request.form.get('user_name')
+        user_phone = request.form.get('user_phone')
+        user_email = request.form.get('user_email')
+        roleLevel = form.roleLevel.data
+        print(username)
+        if form.validate_on_submit():
+            new_user = User(username=username, password=password, name=user_name, phone=user_phone, email=user_email,
+                            role_id=db.session.query(Role).filter_by(name=roleLevel).first().id)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('恭喜你这个混蛋，注册成功')
+            return  render_template('login.html',form = LoginForm())
+        else:
+            flash('参数有误请重新输入' )
+    return render_template('auth/sign.html', form = form)
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('auth.index'))
-
     form = LoginForm()
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
         remember = form.remember.data
-        admin = User.query.first()
+        admin = db.session.query(User).filter_by(username=username).first()
         if admin:
             if username == admin.username and admin.validate_password(password):
                 login_user(admin, remember)
                 flash('Welcome back.', 'info')
-                return redirect_back()
+                return render_template('index.html')
             flash('Invalid username or password.', 'warning')
         else:
             flash('No account.', 'warning')
@@ -155,9 +175,23 @@ def example():
 
 @auth_bp.route('/sqltest')
 def sql_test():
-    user1 = User(user_name='user1', password='22', name='cai2yy', email='ss@nju.com', phone='12222222055', role_id=1)
-    db.session.add(user1)
+    db.drop_all()
+    db.create_all()
+    role1 = Role(name='管理员')
+    role2 = Role(name='个人用户')
+    role3 = Role(name='公司用户')
+    db.session.add_all([role1,role2,role3])
     db.session.commit()
-    user = User.query.filter_by().first()
-    return user.user_name + " : " + user.name
+
+    user1 = User(username='user1', password='22', name='cai2yy', email='ss@nju.com', phone='12222222055', role_id=role1.id)
+    user2 = User(username='user2', password='22', name='cai2yyy', email='ssyyy@nju.com', phone='122546522055',
+                 role_id=role2.id)
+    user3 = User(username='user3', password='22', name='cai2yyyy', email='ssyyyyyyy@nju.com', phone='12246465422055',
+                 role_id=role2.id)
+    db.session.add_all([user1,user2,user3])
+    db.session.commit()
+    testUserName = 'user1'
+    user = db.session.query(User).filter_by(username = testUserName).first()
+
+    return str(user.username )+ " : " + str(user.user_name)
 

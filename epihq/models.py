@@ -23,15 +23,15 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     user_name = db.Column(db.String(30))
     user_email = db.Column(db.String(30))
-    user_Phone = db.Column(db.String(30))
+    user_phone = db.Column(db.String(30))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __init__(self, username, password, name, email, phone, role_id):
         self.username = username
         self.password_hash = generate_password_hash(password)
-        self.name = name
-        self.email = email
-        self.phone = phone
+        self.user_name = name
+        self.user_email = email
+        self.user_phone = phone
         self.role_id = role_id
 
     def __repr__(self):

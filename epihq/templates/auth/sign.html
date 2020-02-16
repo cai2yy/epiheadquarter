@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    {{ form.csrf_token() }}
+
+    {{ form.username.label }}{{ form.username }} <br>
+
+    {{ form.password.label }}{{ form.password }} <br>
+
+    {{ form.passwordConFirm.label }}{{ form.passwordConFirm }} <br>
+
+    {{ form.user_name.label }}{{ form.user_name }} <br>
+
+    {{ form.user_phone.label }}{{ form.user_phone }} <br>
+
+    {{ form.user_email.label }}{{ form.user_email }} <br>
+
+    {{ form.roleLevel.label }}{{ form.roleLevel }} <br>
+
+    {{ form.submit }} <br>
+</form>
+</body>
+</html>
