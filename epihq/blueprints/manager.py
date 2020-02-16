@@ -24,7 +24,12 @@ def home_article():
 """
 
 
-@manager_bp.route('/hello/<string:word>')
+@manager_bp.route('/hello', methods=['GET'])
+def hello():
+    return redirect_back()
+
+
+@manager_bp.route('/hello/<string:word>', methods=['POST'])
 def hello_swagger2(word):
     """
             Test
