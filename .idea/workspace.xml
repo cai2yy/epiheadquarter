@@ -5,6 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/epihq/blueprints/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/epihq/blueprints/manager.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/manager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/epihq/blueprints/news.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/blueprints/news.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/epihq/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/epihq/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +25,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="ProjectId" id="1Xf6wKATMZmJ2v4fS4rpwgPrE6G" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -160,7 +164,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.main2" />
-        <item itemvalue="Flask server.Flask (tests/main2.py)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Flask server.Flask (tests/main.py)" />
         <item itemvalue="Flask server.Flask (wsgi.py)" />
@@ -197,7 +200,10 @@
       <workItem from="1581584239349" duration="22725000" />
       <workItem from="1581669072997" duration="16287000" />
       <workItem from="1581690548037" duration="5284000" />
-      <workItem from="1581732554605" duration="23048000" />
+      <workItem from="1581732554605" duration="25519000" />
+      <workItem from="1581820277318" duration="6975000" />
+      <workItem from="1581844996014" duration="1501000" />
+      <workItem from="1581861913902" duration="1994000" />
     </task>
     <servers />
   </component>
@@ -255,14 +261,18 @@
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
     <state x="341" y="147" key="SettingsEditor/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581669634912" />
-    <state x="432" y="238" key="Vcs.Push.Dialog.v2" timestamp="1581776570514">
+    <state x="432" y="238" key="Vcs.Push.Dialog.v2" timestamp="1581778783403">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="432" y="238" key="Vcs.Push.Dialog.v2/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581776570514" />
-    <state x="538" y="296" key="git4idea.merge.GitPullDialog" timestamp="1581776332506">
+    <state x="432" y="238" key="Vcs.Push.Dialog.v2/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581778783403" />
+    <state x="639" y="429" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581824477956">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>
-    <state x="538" y="296" key="git4idea.merge.GitPullDialog/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581776332506" />
+    <state x="639" y="429" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581824477956" />
+    <state x="538" y="296" key="git4idea.merge.GitPullDialog" timestamp="1581824491283">
+      <screen x="0" y="0" width="1680" height="1010" />
+    </state>
+    <state x="538" y="296" key="git4idea.merge.GitPullDialog/-2160.0.1440.933/0.0.1680.1010@0.0.1680.1010" timestamp="1581824491283" />
     <state x="503" y="217" width="672" height="678" key="search.everywhere.popup" timestamp="1581768309764">
       <screen x="0" y="0" width="1680" height="1010" />
     </state>

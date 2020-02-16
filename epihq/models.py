@@ -28,6 +28,8 @@ class User(db.Model, UserMixin):
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
+    users_relate_roles = db.relationship('Role', backref='roles_relate_users')
+
     def __init__(self, username, password, name, email, phone, role_id):
         self.username = username
         self.password_hash = generate_password_hash(password)
@@ -84,8 +86,8 @@ class Mark(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    user = db.relationship('User', backref='marks')
-    article = db.relationship('Article', backref='marks')
+    marks_relate_users = db.relationship('User', backref='users_relate_marks')
+    marks_relate_articles = db.relationship('Article', backref='articles_relate_marks')
 
     def __init__(self, user_id, article_id):
         self.user_id = user_id
@@ -104,13 +106,13 @@ class Comment(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     comment_body = db.Column(db.Text)
-    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    article_id = db.Column(db.Integer, db.ForeignKey('articles.id'))
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    user = db.relationship('User', backref='comment')
-    article = db.relationship('Article', backref='comment')
+    comments_relate_users = db.relationship('User', backref='users_relate_comments')
+    comments_relate_articles = db.relationship('Article', backref='articles_relate_comments')
 
 
 class Role(db.Model):
@@ -123,8 +125,6 @@ class Role(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), unique=True)
-
-    user = db.relationship('User', backref='role')
 
 
 class NLP(db.Model):
@@ -140,7 +140,7 @@ class NLP(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    user = db.relationship('User', backref='nlp')
+    nlp_relate_users = db.relationship('User', backref='users_relate_nlp')
 
 
 class TrainSet(db.Model):
@@ -157,7 +157,7 @@ class TrainSet(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    nlp = db.relationship('NLP', backref='train_sets')
+    sets_relate_nlp = db.relationship('NLP', backref='nlp_relate_sets')
 
 
 class TrainResult(db.Model):
@@ -179,4 +179,4 @@ class TrainResult(db.Model):
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
-    nlp = db.relationship('NLP', backref='train_results')
+    results_relate_nlp = db.relationship('NLP', backref='nlp_relate_results')

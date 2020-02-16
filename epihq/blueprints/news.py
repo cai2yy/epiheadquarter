@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
 from flask_login import current_user
-from epihq.models import User, Article, Comment, Role
+from epihq.models import User, Article, Comment, Role, Mark
 from epihq.extensions import db
 from epihq.forms import CommentForm
 from epihq.utils import redirect_back
+from json import dumps
 
 news_bp = Blueprint('news', __name__)
 
@@ -23,25 +24,60 @@ def home_article():
 
 @news_bp.route('/news/<int:article_id>')
 def show_article(article_id):
-    # todo 文章页面
-    return render_template('news/article.html')
+    """
+        文章阅读页API
+        ---
+        parameters:
+          - name: user_id
+            in: path
+            type: integer
+            required: true
+            description: 用户id
+          - name: article_id
+            in: path
+            type: integer
+            required: true
+            description: 文章id
+    """
+    article = Article.query.filter_by(id=article_id).first()
+    article_json = dumps(article)
+    comments = Comment.query.filter_by(article_id=article_id)
+    comments_json = dumps(comments)
+    return render_template('news/article.html', article=article_json, comments=comments_json)
 
 
-@news_bp.route('/news/mark/<int:article_id>')
-def mark_article(article_id):
-    # todo 收藏文章
-    return redirect_back()
-
-
-@news_bp.route('/article/remark/<int:article_id>')
-def remark_article(article_id):
-    # todo 取消收藏
+@news_bp.route('/news/mark/<int:user_id>/<int:article_id>')
+def mark_article(user_id, article_id):
+    """
+        收藏文章API
+        ---
+        parameters:
+          - name: user_id
+            in: path
+            type: integer
+            required: true
+            description: 用户id
+          - name: article_id
+            in: path
+            type: integer
+            required: true
+            description: 文章id
+    """
+    mark = Mark.query.filter_by(user_id=user_id, article_id=article_id).first()
+    if mark is None:
+        mark = Mark(user_id, article_id)
+        db.session.add(mark)
+    else:
+        Mark.query.filter_by(user_id=user_id, article_id=article_id).delete()
+    db.session.commit()
+    db.session.close()
     return redirect_back()
 
 
 @news_bp.route('/news/add/<int:article_id>')
 def add_task(article_id):
     # todo 将文章加入任务列表（启动任务在user模块）
+
     return redirect_back()
 
 
@@ -120,4 +156,3 @@ def delete_comment(comment_id):
 def share_article(article_id):
     # todo 分享功能，这个目测比较难
     return redirect_back()
-

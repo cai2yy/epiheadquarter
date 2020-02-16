@@ -17,7 +17,7 @@
 ## Projection Structure
 ### 1. Backend
 - 项目启动入口： [wsgi.py](/wsgi.py)
-- 样例和测试API（整体启动后）: [blueprints/auth.py](epihq/blueprints/auth.py)(在末尾)
+- 样例和测试API（整体启动后）: [blueprints/manager.py](epihq/blueprints/manager.py)(在末尾)
 - 配置文件: [config.py](epihq/config.py)
 - 常量库: [const.py](epihq/const.py)
 - 表单：[forms.py](epihq/forms.py)
@@ -29,15 +29,17 @@
 
 ## Development Guide
 ### Backend API Develop
+#### 0. 准备
+- 建表：运行项目`flask run` -> 访问`http://127.0.0.1:5000/create`
 #### 1. 落脚点操作:
-参考：[blueprints/auth.py](epihq/blueprints/auth.py) 尾部
+参考：[blueprints/manager.py](epihq/blueprints/manager.py) 尾部
 - 渲染当前页面，后面紧跟的是传参: `return render_template('user/marks.html', article=article)`
 - 跳转到上一个页面: `return redirect_back()`
 - 跳转到其他页面: `return redirect('/account/edit')`
 - 跳转到某个函数所在页面: `return redirect(url_for('news.home_article'))`
 #### 2. Swagger API调试
 - 访问方法：http://127.0.0.1:5000/apidocs/
-- 后端写法：在函数体中写注释来启动该API的swagger调试功能，例：[blueprints/auth.py](epihq/blueprints/auth.py) 内的hello_swagger()函数
+- 后端写法：在函数体中写注释来启动该API的swagger调试功能，例：[blueprints/manager.py](epihq/blueprints/manager.py) 内的hello_swagger()函数
 ****
 ### Database
 #### 1 CRUD:
