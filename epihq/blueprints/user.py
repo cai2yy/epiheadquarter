@@ -59,10 +59,21 @@ def my_marks():
 
 
 """
-训练集模块
+nlp模块
 @author: 
 @time: 
 """
+
+
+@user_bp.route('/nlp', methods=['GET'])
+def show_nlp():
+    flash("请先登录")
+    return redirect('/hello')
+
+
+@user_bp.route('/nlp', methods=['POST'])
+def post_nlp():
+    return "post_nlp"
 
 
 @user_bp.route('/trainings')

@@ -1,9 +1,10 @@
 from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
 from flask_login import current_user
-from epihq.models import User, Article, Comment, Role, Mark
+from epihq.models import User, Article, Comment, Role, Mark, TrainResult, TrainSet, NLP
 from epihq.extensions import db
 from epihq.forms import CommentForm
 from epihq.utils import redirect_back
+from epihq.const import PERSON_USER
 from json import dumps
 
 news_bp = Blueprint('news', __name__)
@@ -22,47 +23,69 @@ def home_article():
     return render_template('news/home.html')
 
 
-@news_bp.route('/news/<int:article_id>')
+@news_bp.route('/news/<int:article_id>', methods=['GET'])
 def show_article(article_id):
     """
-        文章阅读页API
-        ---
-        parameters:
-          - name: user_id
-            in: path
-            type: integer
-            required: true
-            description: 用户id
-          - name: article_id
-            in: path
-            type: integer
-            required: true
-            description: 文章id
-    """
+            获取文章API
+            ---
+            parameters:
+              - name: article_id
+                in: path
+                type: integer
+                required: true
+                description: 文章id
+        """
     article = Article.query.filter_by(id=article_id).first()
+    if article is None:
+        flash("文章不存在或已被删除")
+        abort(404)
     article_json = dumps(article)
     comments = Comment.query.filter_by(article_id=article_id)
     comments_json = dumps(comments)
-    return render_template('news/article.html', article=article_json, comments=comments_json)
+    return render_template('news/show_article.html', article=article_json, comments=comments_json)
 
 
-@news_bp.route('/news/mark/<int:user_id>/<int:article_id>')
-def mark_article(user_id, article_id):
+@news_bp.route('/news/<int:article_id>', methods=['DELETE'])
+def delete_article(article_id):
     """
-        收藏文章API
-        ---
-        parameters:
-          - name: user_id
-            in: path
-            type: integer
-            required: true
-            description: 用户id
-          - name: article_id
-            in: path
-            type: integer
-            required: true
-            description: 文章id
+            删除文章API
+            ---
+            parameters:
+              - name: article_id
+                in: path
+                type: integer
+                required: true
+                description: 文章id
+        """
+    if current_user.is_anonymous:
+        flash('请先登录')
+        return redirect('/login')
+    user = current_user
+    if not user.validate_admin:
+        flash('没有该权限')
+        return redirect_back()
+    Article.query.filter_by(id=article_id).delete()
+    db.session.commit()
+    flash("删除文章成功")
+    return redirect_back()
+
+
+@news_bp.route('/news/mark/<int:article_id>')
+def mark_article(article_id):
     """
+            收藏文章API
+            ---
+            parameters:
+              - name: article_id
+                in: path
+                type: integer
+                required: true
+                description: 文章id
+        """
+    if current_user.is_anonymous:
+        flash('请先登录')
+        return redirect('/login')
+    user_id = current_user.id
     mark = Mark.query.filter_by(user_id=user_id, article_id=article_id).first()
     if mark is None:
         mark = Mark(user_id, article_id)
@@ -74,39 +97,45 @@ def mark_article(user_id, article_id):
     return redirect_back()
 
 
-@news_bp.route('/news/add/<int:article_id>')
-def add_task(article_id):
-    # todo 将文章加入任务列表（启动任务在user模块）
-
-    return redirect_back()
-
-
-@news_bp.route('/news/delete/<int:article_id>')
-def delete_article(article_id):
-    """用户是否登录"""
+@news_bp.route('/news/train/<int:article_id>')
+def task_article(article_id, nlp_id):
+    """
+            将文章添加到训练任务队列API
+            ---
+            parameters:
+              - name: article_id
+                in: path
+                type: integer
+                required: true
+                description: 当前文章id
+              - name: nlp_id
+                in: query
+                type: integer
+                required: true
+                description: 单击'添加任务'按钮后弹出nlp单选框（陈列了该用户创建的nlp)，用户选中项提交了该参数
+        """
     if current_user.is_anonymous:
         flash('请先登录')
-        return redirect(url_for('auth.login'))
-    user = current_user
-    """用户是否为管理员"""
-    if not user.validate_admin:
-        flash('没有该权限')
-        return redirect_back()
-    Article.query.filter_by(id=article_id).delete()
+        return redirect('/login')
+    article = Article.query.filter_by(article_id=article_id).first()
+    result = TrainResult(article.article_title, article.article_content, nlp_id)
+    db.session.add(result)
     db.session.commit()
-    flash("删除文章成功")
-    return redirect_back(url_for('.home_article'))
-
-
-@news_bp.route('/news/stick/<int:article_id>')
-def stick_article(article_id):
-    # todo 置顶文章
     return redirect_back()
 
 
-@news_bp.route('/news/destick/<int:article_id>')
-def cancel_stick_article(article_id):
-    # todo 取消置顶文章
+@news_bp.route('/news/top/<int:article_id>')
+def top_article(article_id):
+    """
+                置顶文章API，需要管理员权限
+                ---
+                parameters:
+                  - name: article_id
+                    in: path
+                    type: integer
+                    required: true
+                    description: 当前文章id
+            """
     return redirect_back()
 
 

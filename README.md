@@ -1,6 +1,6 @@
-##### @version: v1.0
-##### @date: 2.15
-# For Developer
+##### @version: v1.1
+##### @date: 2.16
+# --- For Developer ---
 ## Tasks
 | Task | Engineer | Deadline |
 | ------ | ------ | ------ |
@@ -11,26 +11,31 @@
 | 部署，测试 | cyy, zwk, zc | 2.20 |
 
 ## Easy Start
-##### 启动项目：
-(Terminal) 在项目根路径输入"flask run"
-`epiheadquarter >flask run` 
+以下操作在项目根目录(epiheadquarter\)下，使用终端或命令行输入
+1. 安装依赖：`>pip install -r requirements.txt`
+2. 修改数据库参数: [config.py](epihq/config.py)
+3. 运行：`>flask run`
+4. 若本地数据库表未建好，可访问`http://127.0.0.1:5000/create`自动建表
+5. Swagger接口管理页：`http://127.0.0.1:5000/apidocs`
+
 ## Projection Structure
 ### 1. Backend
 - 项目启动入口： [wsgi.py](/wsgi.py)
-- 样例和测试API（整体启动后）: [blueprints/manager.py](epihq/blueprints/manager.py)(在末尾)
+- 各模块（蓝图）：[blueprints/](epihq/blueprints)
 - 配置文件: [config.py](epihq/config.py)
 - 常量库: [const.py](epihq/const.py)
 - 表单：[forms.py](epihq/forms.py)
 - 数据类型（数据库orm）: [models.py](epihq/models.py)
 - 插件: [extensions.py](epihq/extensions.py)
+- 其他工具：[utils.py](epihq/utils.py)
 ### 2. Frontend
-- 首页 [templates/index.html](epihq/templates/index.html)
-- 错误页面 [templates/errors](epihq/templates/errors)
+- 模板 [templates](epihq/templates)
+- 静态资源 [static](epihq/static)
+    - 首页 [templates/index.html](epihq/templates/index.html)
+    - 错误页面 [templates/errors/](epihq/templates/errors)
 
 ## Development Guide
 ### Backend API Develop
-#### 0. 准备
-- 建表：运行项目`flask run` -> 访问`http://127.0.0.1:5000/create`
 #### 1. 落脚点操作:
 参考：[blueprints/manager.py](epihq/blueprints/manager.py) 尾部
 - 渲染当前页面，后面紧跟的是传参: `return render_template('user/marks.html', article=article)`
@@ -39,11 +44,11 @@
 - 跳转到某个函数所在页面: `return redirect(url_for('news.home_article'))`
 #### 2. Swagger API调试
 - 访问方法：http://127.0.0.1:5000/apidocs/
-- 后端写法：在函数体中写注释来启动该API的swagger调试功能，例：[blueprints/manager.py](epihq/blueprints/manager.py) 内的hello_swagger()函数
-****
+- 后端写法：在函数体中写注释来启动该API的swagger调试功能
+
 ### Database
 #### 1 CRUD:
 参考：https://www.cnblogs.com/shangerzhong/articles/10381793.html
 
 
-# For User
+# --- For User ---

@@ -68,6 +68,7 @@ class Article(db.Model):
     article_time = db.Column(db.DateTime, default=datetime.utcnow, index=True)
     article_writer = db.Column(db.String(20))
     article_tag = db.Column(db.String(20))
+    top = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
@@ -120,8 +121,8 @@ class Role(db.Model):
     """
     角色表
     id为角色id
-    name为角色名，共有三类
-    和users添加关系引用
+    id:     0     |    1    |    2  
+    name: 管理员  | 个人用户 | 企业用户
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), unique=True)
@@ -130,7 +131,7 @@ class Role(db.Model):
 class NLP(db.Model):
     __tablename__ = 'nlp'
     """
-    用户-NLP程序表 1 <-> 1
+    用户-NLP程序表 1 <-> N
     description为用户添加的备注
     user_id为外键，指向user表中的id
     """
@@ -167,6 +168,7 @@ class TrainResult(db.Model):
     NLP程序-训练结果表 1 <-> N
     title为标题
     text为文本
+    status为训练状态，0->未开始，1->正在训练,2->训练结束
     entities为实体集，即实体标签
     tags为标签
     """
@@ -175,8 +177,26 @@ class TrainResult(db.Model):
     text = db.Column(db.Text)
     entities = db.Column(db.String(20))
     tags = db.Column(db.String(20))
+    status = db.Column(db.Integer, default=0)
     nlp_id = db.Column(db.Integer, db.ForeignKey('nlp.id'))
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
+    results_relate_status = db.relationship('TrainStatus', backref='status_relate_results')
     results_relate_nlp = db.relationship('NLP', backref='nlp_relate_results')
+
+    def __init__(self, title, text, nlp_id):
+        self.title = title
+        self.text = text
+        self.nlp_id = nlp_id
+
+
+class TrainStatus(db.Model):
+    __tablename__ = 'train_status'
+    """
+    训练状态表
+    id:     0     |    1    |   2  
+    name: 未开始  | 正在运行 | 已完成
+    """
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(16), unique=True)
