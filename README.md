@@ -35,20 +35,44 @@
     - 错误页面 [templates/errors/](epihq/templates/errors)
 
 ## Development Guide
-### Backend API Develop
-#### 1. 落脚点操作:
+### 1. Web Operations
+#### 1) 落脚点操作:
 参考：[blueprints/manager.py](epihq/blueprints/manager.py) 尾部
 - 渲染当前页面，后面紧跟的是传参: `return render_template('user/marks.html', article=article)`
 - 跳转到上一个页面: `return redirect_back()`
 - 跳转到其他页面: `return redirect('/account/edit')`
 - 跳转到某个函数所在页面: `return redirect(url_for('news.home_article'))`
-#### 2. Swagger API调试
-- 访问方法：http://127.0.0.1:5000/apidocs/
-- 后端写法：在函数体中写注释来启动该API的swagger调试功能
+### 2. Swagger API 
+在函数体中写注释来启动该API的swagger调试功能
+url：http://127.0.0.1:5000/apidocs/
+#### 1) 模板: 
 
-### Database
-#### 1 CRUD:
-参考：https://www.cnblogs.com/shangerzhong/articles/10381793.html
+    """
+            注册用户API
+            ---
+            parameters:
+              - name: article_id
+                in: query
+                type: integer
+                required: true
+                description: 当前文章id
+        """
+#### 2) 参数说明：
+- ##### parameters: 
+    - ##### in:
+    | 字段 | 说明 |
+    | ------ | ------ |
+    |path   |   以地址的形式提交数据
+    |query  |   直接跟参数完成自动映射赋值
+    |body   |   以流的形式提交 仅支持POST
+    |header |   参数在request headers 里边提交
+    |form   |   以form表单的形式提交 仅支持POST
 
+### 3. Database Operations
+#### 1) CRUD:
+参考：sqlalchemy增删改查操作 https://www.cnblogs.com/shangerzhong/articles/10381793.html
+
+### 4. Form
+参考：Flask表单入门 https://www.cnblogs.com/senlinyang/p/8376452.html
 
 # --- For User ---
