@@ -1,0 +1,23 @@
+发表评论
+---
+tags:
+  - 评论
+parameters:
+  - name: article_id
+    description: 文章id
+    in: path
+    required: true
+    type: integer
+  - name: Comment
+    description: 评论表单
+    in: body
+    required: true
+    schema:
+      $ref: '#/definitions/parameters/Comment'
+responses:
+  '200':
+    description: 获取评论成功
+    schema:
+      $ref: '#/definitions/responses/Comment'
+  '404':
+    description: 找不到评论

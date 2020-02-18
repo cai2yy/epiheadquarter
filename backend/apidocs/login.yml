@@ -1,0 +1,25 @@
+登录
+---
+tags:
+  - 用户
+parameters:
+  - name: username
+    description: 用户名
+    in: formData
+    required: true
+    type: string
+  - name: password
+    description: 密码
+    in: formData
+    required: true
+    type: string
+  - name: remember
+    description: 记住我
+    in: formData
+    required: true
+    type: boolean
+responses:
+  '205':
+    description: 登录成功
+  '500':
+    description: 登录失败

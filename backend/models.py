@@ -1,12 +1,43 @@
 from datetime import datetime
-
+from flask import url_for
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from epihq.extensions import db
-from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
+from utils.extensions import db
+from utils.const import ADMIN_USER
 
 
-class User(db.Model, UserMixin):
+class PaginatedAPIMixin(object):
+    @staticmethod
+    def to_collection_dict(query, page, per_page, endpoint, **kwargs):
+        # 如果当前没有任何资源时，或者前端请求的 page 越界时，都会抛出 404 错误
+        # 由 @bp.app_errorhandler(404) 自动处理，即响应 JSON 数据：{ error: "Not Found" }
+        resources = query.paginate(page, per_page)
+        data = {
+            'items': [item.to_dict() for item in resources.items],
+            '_meta': {
+                'page': page,
+                'per_page': per_page,
+                'total_pages': resources.pages,
+                'total_items': resources.total
+            },
+            '_links': {
+                'self': url_for(endpoint, page=page, per_page=per_page,
+                                **kwargs),
+                'next': url_for(endpoint, page=page + 1, per_page=per_page,
+                                **kwargs) if resources.has_next else None,
+                'prev': url_for(endpoint, page=page - 1, per_page=per_page,
+                                **kwargs) if resources.has_prev else None
+            }
+        }
+        return data
+
+    def to_dict(self):
+        return {
+            c.name: getattr(User, c.name) for c in self.__table__.columns
+        }
+
+
+class User(db.Model, UserMixin, PaginatedAPIMixin):
     __tablename__ = 'users'
     """
     用户表
@@ -51,7 +82,7 @@ class User(db.Model, UserMixin):
         return self.role_id == ADMIN_USER
 
 
-class Article(db.Model):
+class Article(db.Model, PaginatedAPIMixin):
     __tablename__ = 'articles'
     """
     新闻表
@@ -66,14 +97,19 @@ class Article(db.Model):
     article_title = db.Column(db.Text)
     article_content = db.Column(db.Text)
     article_time = db.Column(db.DateTime, default=datetime.utcnow, index=True)
-    article_writer = db.Column(db.String(20))
+    article_author = db.Column(db.String(20))
     article_tag = db.Column(db.String(20))
     top = db.Column(db.Boolean, default=False)
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
+    def from_dict(self, data):
+        for field in ['title', 'content', 'time', 'author', 'tag']:
+            if field in data:
+                setattr(self, field, data[field])
 
-class Mark(db.Model):
+
+class Mark(db.Model, PaginatedAPIMixin):
     __tablename__ = 'marks'
     """
     收藏表，是users-articles的一个连接表
@@ -95,7 +131,7 @@ class Mark(db.Model):
         self.article_id = article_id
 
 
-class Comment(db.Model):
+class Comment(db.Model, PaginatedAPIMixin):
     __tablename__ = 'comments'
     """
     新闻评论表
@@ -115,6 +151,11 @@ class Comment(db.Model):
     comments_relate_users = db.relationship('User', backref='users_relate_comments')
     comments_relate_articles = db.relationship('Article', backref='articles_relate_comments')
 
+    def __init__(self, body, user_id, article_id):
+        self.comment_body = body
+        self.user_id = user_id
+        self.article_id = article_id
+
 
 class Role(db.Model):
     __tablename__ = 'roles'
@@ -127,8 +168,12 @@ class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), unique=True)
 
+    def __init__(self, role_id, name):
+        self.id = role_id
+        self.name = name
 
-class NLP(db.Model):
+
+class NLP(db.Model, PaginatedAPIMixin):
     __tablename__ = 'nlp'
     """
     用户-NLP程序表 1 <-> N
@@ -144,7 +189,7 @@ class NLP(db.Model):
     nlp_relate_users = db.relationship('User', backref='users_relate_nlp')
 
 
-class TrainSet(db.Model):
+class TrainSet(db.Model, PaginatedAPIMixin):
     __tablename__ = 'train_sets'
     """
     NLP程序-训练集表 1 <-> N
@@ -161,7 +206,7 @@ class TrainSet(db.Model):
     sets_relate_nlp = db.relationship('NLP', backref='nlp_relate_sets')
 
 
-class TrainResult(db.Model):
+class TrainResult(db.Model, PaginatedAPIMixin):
     # todo 待完善
     __tablename__ = 'train_results'
     """
@@ -177,7 +222,7 @@ class TrainResult(db.Model):
     text = db.Column(db.Text)
     entities = db.Column(db.String(20))
     tags = db.Column(db.String(20))
-    status = db.Column(db.Integer, default=0)
+    status = db.Column(db.Integer, db.ForeignKey('train_status.id'), default=0)
     nlp_id = db.Column(db.Integer, db.ForeignKey('nlp.id'))
     create_time = db.Column(db.DateTime, default=datetime.now)
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
@@ -200,3 +245,7 @@ class TrainStatus(db.Model):
     """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(16), unique=True)
+
+    def __init__(self, status_id, name):
+        self.id = status_id
+        self.name = name

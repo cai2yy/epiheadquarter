@@ -3,21 +3,16 @@ import os
 from logging.handlers import SMTPHandler, RotatingFileHandler
 import click
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, make_response
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
 from flask_wtf.csrf import CSRFError
 
-from epihq.blueprints.user import user_bp
-from epihq.blueprints.auth import auth_bp
-from epihq.blueprints.news import news_bp
-from epihq.blueprints.manager import manager_bp
-from epihq.blueprints.map import map_bp
-from epihq.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate, swagger
-from epihq.models import User
-from epihq.config import config, SQLALCHEMY_DATABASE_URI
-from epihq.crawler import async_get_articles, async_get_patients_data
-from epihq.const import ADMIN_USER, PERSON_USER, BUSINESS_USER
+from api import auth_bp, manager_bp, news_bp, user_bp
+from utils.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate, swagger
+from backend.models import User
+from utils.config import SQLALCHEMY_DATABASE_URI
+from components.crawler import async_get_articles, async_get_patients_data
 
 from concurrent.futures import ThreadPoolExecutor
 
@@ -30,7 +25,7 @@ def create_app(config_name=None):
     if config_name is None:
         config_name = os.getenv('FLASK_CONFIG', 'development')
 
-    app = Flask('epihq')
+    app = Flask('backend')
     # 连接本地数据库，测试临时用
     app.config['SQLALCHEMY_DATABASE_URI'] = SQLALCHEMY_DATABASE_URI
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -59,7 +54,7 @@ def register_extensions(app):
     bootstrap.init_app(app)
     login_manager.init_app(app)
     db.init_app(app)
-    csrf.init_app(app)
+    # csrf.init_app(app)
     ckeditor.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
@@ -69,12 +64,11 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    """加载功能模块"""
+    """加载功能模块（蓝图）"""
     app.register_blueprint(auth_bp)
-    app.register_blueprint(user_bp)
-    app.register_blueprint(news_bp)
     app.register_blueprint(manager_bp)
-    app.register_blueprint(map_bp)
+    app.register_blueprint(news_bp)
+    app.register_blueprint(user_bp)
 
 
 def register_logging(app):
@@ -148,22 +142,11 @@ def register_commands(app):
 
 
 def register_errors(app):
+    # TODO 研究要不要做日志记录
     """网络请求发生错误时调用函数"""
-    @app.errorhandler(400)
-    def bad_request(e):
-        return render_template('errors/400.html'), 400
-
-    @app.errorhandler(404)
-    def page_not_found(e):
-        return render_template('errors/404.html'), 404
-
-    @app.errorhandler(500)
-    def internal_server_error(e):
-        return render_template('errors/500.html'), 500
-
     @app.errorhandler(CSRFError)
     def handle_csrf_error(e):
-        return render_template('errors/400.html', description=e.description), 400
+        return make_response(e.description, 400)
 
 
 def register_request_handlers(app):

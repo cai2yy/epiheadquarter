@@ -1,0 +1,15 @@
+获取评论
+---
+tags:
+  - 评论
+parameters:
+  - name: comment_id
+    description: 评论id
+    in: path
+    required: true
+    type: integer
+responses:
+  '200':
+    description: 获取评论成功
+    schema:
+      $ref: '#/definitions/responses/ArticleCollection'

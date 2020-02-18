@@ -1,0 +1,171 @@
+注册
+---
+tags:
+  - 用户
+parameters:
+  - name: username
+    description: 用户名
+    in: formData
+    required: true
+    type: string
+  - name: password
+    description: 密码
+    in: formData
+    required: true
+    type: string
+  - name: name
+    description: 姓名
+    in: formData
+    required: true
+    type: string
+  - name: email
+    description: 邮箱
+    in: formData
+    required: true
+    type: string
+  - name: phone
+    description: 电话
+    in: formData
+    required: true
+    type: string
+  - name: role_id
+    description: 用户权限
+    in: formData
+    descripton: 分别对应管理员，个人用户，企业用户
+    required: true
+    type: integer
+    enum: [1, 2, 3]
+responses:
+  '201':
+    description: 注册成功
+    schema:
+      $ref: '#/definitions/responses/User'
+  '500':
+    description: 注册失败
+
+definitions:
+  parameters:
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+        password_hash:
+          type: string
+        user_name:
+          type: string
+        user_email:
+          type: string
+        user_phone:
+          type: string
+        role_id:
+          type: integer
+    Article:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: text
+        time:
+          type: datetime
+        author:
+          type: string
+        tag:
+          type: string
+        is_top:
+          type: boolean
+    Comment:
+      type: object
+      properties:
+        comment_body:
+          type: text
+        user_id:
+          type: integer
+        article_id:
+          type: integer
+  responses:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        password_hash:
+          type: string
+        user_name:
+          type: string
+        user_email:
+          type: string
+        user_phone:
+          type: string
+        role_id:
+          type: integer
+        create_time:
+          type: datetime
+        update_time:
+          type: datetime
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+        comment_body:
+          type: text
+        user_id:
+          type: integer
+        article_id:
+          type: integer
+        create_time:
+          type: datetime
+        update_time:
+          type: datetime
+    Article:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        content:
+          type: text
+        time:
+          type: datetime
+        author:
+          type: string
+        tag:
+          type: string
+        is_top:
+          type: boolean
+        create_time:
+          type: datetime
+        update_time:
+          type: datetime
+    ArticleCollection:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/definitions/responses/Article'
+        _meta:
+          type: object
+          properties:
+            page:
+              type: integer
+            per_page:
+              type: integer
+            total_pages:
+              type: integer
+            total_items:
+              type: integer
+        _links:
+          type: object
+          properties:
+            self:
+              type: string
+            next:
+              type: string
+            prev:
+              type: string

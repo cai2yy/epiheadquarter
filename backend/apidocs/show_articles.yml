@@ -1,0 +1,9 @@
+获取全部文章-分页显示
+---
+tags:
+  - 文章
+responses:
+  '200':
+    description: 获取文章成功
+    schema:
+      $ref: '#/definitions/responses/ArticleCollection'

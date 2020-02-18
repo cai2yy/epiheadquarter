@@ -1,9 +1,8 @@
-from flask import render_template, flash, redirect, url_for, request, current_app, Blueprint, abort, make_response
-from flask_login import current_user
-from epihq.models import User, Article, Comment, Role
-from epihq.extensions import db
-from epihq.forms import CommentForm,SignInForm
-from epihq.utils import redirect_back
+from flask import render_template, flash, redirect, url_for, Blueprint
+from backend.models import User
+from utils.extensions import db
+from backend.forms import RegisterForm
+from utils.helper import redirect_back
 
 user_bp = Blueprint('user', __name__)
 
@@ -31,7 +30,7 @@ def edit_account():
 @user_bp.route('/account/edit/save')
 def save_account():
     # todo 编辑账户，提交表单信息到数据库
-    form = SignInForm()
+    form = RegisterForm()
     if form.validate_on_submit():
         username = form.username.data
         user_name = form.user_name.data

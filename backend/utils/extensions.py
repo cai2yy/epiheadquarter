@@ -26,7 +26,7 @@ swagger = Swagger()
 
 @login_manager.user_loader
 def load_user(user_id):
-    from epihq.models import User
+    from backend.models import User
     user = User.query.get(int(user_id))
     return user
 

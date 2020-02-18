@@ -15,7 +15,7 @@ def is_safe_url(target):
     return test_url.scheme in ('http', 'https') and ref_url.netloc == test_url.netloc
 
 
-def redirect_back(default='index', **kwargs):
+def redirect_back(default='map.index', **kwargs):
     # TODO
     for target in request.args.get('next'), request.referrer:
         if not target:

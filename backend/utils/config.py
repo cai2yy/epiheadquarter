@@ -8,7 +8,7 @@ basedir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 DIALECT = 'mysql'
 DRIVER = 'pymysql'
 USERNAME = 'root'
-PASSWORD = '19960319'
+PASSWORD = '19940712'
 HOST = '127.0.0.1'
 PORT = '3306'
 DATABASE = 'epihq'
@@ -55,6 +55,7 @@ class BaseConfig(object):
     BLUELOG_UPLOAD_PATH = os.path.join(basedir, 'uploads')
     BLUELOG_ALLOWED_IMAGE_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
     SECRET_KEY = '12345678'
+
 
 class DevelopmentConfig(BaseConfig):
     QLALCHEMY_DATABASE_URI = prefix + os.path.join(basedir, 'data-dev.db')

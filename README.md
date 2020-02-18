@@ -13,31 +13,31 @@
 ## Easy Start
 以下操作在项目根目录(epiheadquarter\)下，使用终端或命令行输入
 1. 安装依赖：`>pip install -r requirements.txt`
-2. 修改数据库参数: [config.py](epihq/config.py)
+2. 修改数据库参数: [config.py](backend/utils/config.py)
 3. 运行：`>flask run`
 4. 若本地数据库表未建好，可访问`http://127.0.0.1:5000/create`自动建表
 5. Swagger接口管理页：`http://127.0.0.1:5000/apidocs`
 
 ## Projection Structure
 ### 1. Backend
-- 项目启动入口： [wsgi.py](/wsgi.py)
-- 各模块（蓝图）：[blueprints/](epihq/blueprints)
-- 配置文件: [config.py](epihq/config.py)
-- 常量库: [const.py](epihq/const.py)
-- 表单：[forms.py](epihq/forms.py)
-- 数据类型（数据库orm）: [models.py](epihq/models.py)
-- 插件: [extensions.py](epihq/extensions.py)
-- 其他工具：[utils.py](epihq/utils.py)
+- 项目启动入口： [wsgi.py](/main.py)
+- 各模块（蓝图）：[blueprints/](backend/api)
+- 配置文件: [config.py](backend/utils/config.py)
+- 常量库: [const.py](backend/utils/const.py)
+- 表单：[forms.py](backend/forms.py)
+- 数据类型（数据库orm）: [models.py](backend/models.py)
+- 插件: [extensions.py](backend/utils/extensions.py)
+- 其他工具：[utils.py](backend/utils/helper.py)
 ### 2. Frontend
-- 模板 [templates](epihq/templates)
-- 静态资源 [static](epihq/static)
-    - 首页 [templates/index.html](epihq/templates/index.html)
-    - 错误页面 [templates/errors/](epihq/templates/errors)
+- 模板 [templates](frontend/templates)
+- 静态资源 [static](frontend/static)
+    - 首页 [templates/index.html](frontend/templates/index.html)
+    - 错误页面 [templates/errors/](frontend/templates/errors)
 
 ## Development Guide
 ### 1. Web Operations
 #### 1) 落脚点操作:
-参考：[blueprints/manager.py](epihq/blueprints/manager.py) 尾部
+参考：[blueprints/manager.py](backend/api/manager.py) 尾部
 - 渲染当前页面，后面紧跟的是传参: `return render_template('user/marks.html', article=article)`
 - 跳转到上一个页面: `return redirect_back()`
 - 跳转到其他页面: `return redirect('/account/edit')`
@@ -60,14 +60,13 @@ url：http://127.0.0.1:5000/apidocs/
 #### 2) 参数说明：
 - ##### parameters: 
     - ##### in:
-    | 字段 | 说明 |
-    | ------ | ------ |
-    |path   |   以地址的形式提交数据
-    |query  |   直接跟参数完成自动映射赋值
-    |body   |   以流的形式提交 仅支持POST
-    |header |   参数在request headers 里边提交
-    |form   |   以form表单的形式提交 仅支持POST
-
+    | 字段 | 说明 | 示例 |
+    | ------ | ------ | ----- |
+    |path   |   以地址的形式提交数据  | /users/{id}
+    |query  |   参数（包括表单）完成自动映射赋值    |  /users?role=admin
+    |header |   参数在request headers 里边提交 | X-MyHeader: Value
+    |cookie   |   以流的形式提交 仅支持POST | Cookie: debug=0; csrftoken=BUSe35dohU3O1MZvDCU
+    
 ### 3. Database Operations
 #### 1) CRUD:
 参考：sqlalchemy增删改查操作 https://www.cnblogs.com/shangerzhong/articles/10381793.html
