@@ -1,0 +1,78 @@
+@url=http://localhost:3000
+@json=Content-Type: application/json
+
+###
+
+get {{url}}/users
+
+###
+
+post {{url}}/register
+{{json}}
+
+{
+  "username": "user1",
+  "password": "11"
+}
+
+###
+
+post {{url}}/login
+{{json}}
+
+{
+  "username": "user1",
+  "password": "11"
+}
+
+
+
+###
+
+delete {{url}}/user/5e1b22e380356265d0f65f04
+
+
+###
+
+get {{url}}/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZTFiMmQ3N2QyMjhlMjJkMDA5MzYxMjMiLCJpYXQiOjE1Nzg4NDE2Mzd9.uGKAhnOyzoPMIaL-axjksYGwzfFdZP6MTRNVMqSGcT4
+
+
+###
+
+get {{url}}/admin/api/articles
+
+
+###
+
+post {{url}}/admin/api/articles
+{{json}}
+
+{
+  "title": "3",
+  "content": "333333"
+}
+
+
+###
+
+put {{url}}/admin/api/articles/5e4cb2f14b6d4a0990d2f560
+{{json}}
+
+{
+  "title": "1",
+  "content": "22222"
+}
+
+
+
+
+###
+
+get {{url}}/admin/api/articles/5e4cb2f14b6d4a0990d2f560
+
+
+###
+
+delete {{url}}/admin/api/articles/5e4cb2f14b6d4a0990d2f560
+
