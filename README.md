@@ -29,10 +29,39 @@
 - 插件: [extensions.py](backend/utils/extensions.py)
 - 其他工具：[utils.py](backend/utils/helper.py)
 ### 2. Frontend
-- 客户端 [](myapp/web) 使用--> npm i && npm run serve
-- 后台管理 [](myapp/admin) 使用--> npm i && npm run serve
-  - 测试用后端代码 [](myapp/server) 使用--> npm i && npm run serve
-- 静态资源 [static](myapp/admin/dist && myapp/web/dist)
+- 客户端 [main.js](myapp/web/src) 
+
+    - 使用
+
+      ```bash
+      npm i && npm run serve
+      ```
+
+      
+
+- 后台管理 [main.js](myapp/admin/src) 
+  
+  - 使用 
+  
+    ```bash
+    npm i && npm run serve
+    ```
+  
+    
+  
+  - 测试用后端代码 [index.js](myapp/server/) 
+  
+    - 使用
+  
+      ```bash
+      npm i && npm run serve
+      ```
+  
+      
+  
+- 静态资源 [static](myapp/admin/dist)
+
+- 静态资源 [static](myapp/web/dist)
     - 客户端首页 [dist/index.html](myapp/web/dist)
     - 后台管理首页 [dist/index.html](myapp/admin/dist)
 
