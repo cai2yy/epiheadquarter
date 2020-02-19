@@ -2,8 +2,8 @@ from datetime import datetime
 from flask import url_for
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from utils.extensions import db
-from utils.const import ADMIN_USER
+from backend.utils.extensions import db
+from backend.utils.const import ADMIN_USER
 
 
 class PaginatedAPIMixin(object):

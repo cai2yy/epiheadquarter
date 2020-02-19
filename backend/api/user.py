@@ -1,8 +1,8 @@
 from flask import render_template, flash, redirect, url_for, Blueprint
 from backend.models import User
-from utils.extensions import db
+from backend.utils.extensions import db
 from backend.forms import RegisterForm
-from utils.helper import redirect_back
+from backend.utils.helper import redirect_back
 
 user_bp = Blueprint('user', __name__)
 

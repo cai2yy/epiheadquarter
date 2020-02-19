@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, Blueprint, make_response, jsonify
 from backend.models import User, Role, TrainStatus
-from utils.extensions import db, swag_from
-from utils.helper import redirect_back
+from backend.utils.extensions import db, swag_from
+from backend.utils.helper import redirect_back
 
 manager_bp = Blueprint('manager', __name__)
 

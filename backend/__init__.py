@@ -6,13 +6,13 @@ import click
 from flask import Flask, render_template, request, make_response
 from flask_login import current_user
 from flask_sqlalchemy import get_debug_queries
-from flask_wtf.csrf import CSRFError
+# from flask_wtf.csrf import CSRFError
 
-from api import auth_bp, manager_bp, news_bp, user_bp
-from utils.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate, swagger
+from backend.api import auth_bp, manager_bp, news_bp, user_bp
+from backend.utils.extensions import bootstrap, db, login_manager, csrf, ckeditor, mail, moment, toolbar, migrate, swagger
 from backend.models import User
-from utils.config import SQLALCHEMY_DATABASE_URI
-from components.crawler import async_get_articles, async_get_patients_data
+from backend.utils.config import SQLALCHEMY_DATABASE_URI
+from backend.components.crawler import async_get_articles, async_get_patients_data
 
 from concurrent.futures import ThreadPoolExecutor
 

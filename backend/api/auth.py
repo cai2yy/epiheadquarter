@@ -1,11 +1,11 @@
 from flask import render_template, flash, redirect, Blueprint, request, make_response, jsonify, url_for, abort
 from json import dumps
 from flask_login import login_user, logout_user, current_user
-from utils.helper import redirect_back
+from backend.utils.helper import redirect_back
 from backend.forms import LoginForm
-from utils.extensions import db, swag_from
+from backend.utils.extensions import db, swag_from
 from backend.models import User
-from utils.const import JSON
+from backend.utils.const import JSON
 
 auth_bp = Blueprint('auth', __name__)
 

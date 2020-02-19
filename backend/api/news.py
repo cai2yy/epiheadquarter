@@ -1,9 +1,9 @@
 from flask import render_template, flash, redirect, Blueprint, abort, url_for, jsonify, request, current_app, make_response
 from flask_login import current_user
 from backend.models import Article, Comment, Mark, TrainResult
-from utils.extensions import db, swag_from
+from backend.utils.extensions import db, swag_from
 from backend.forms import CommentForm
-from utils.helper import redirect_back
+from backend.utils.helper import redirect_back
 from json import dumps
 
 news_bp = Blueprint('news', __name__)
