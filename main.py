@@ -1,4 +1,5 @@
 import os
+os.chdir(os.getcwd())
 from dotenv import load_dotenv
 from backend import create_app  # noqa
 
