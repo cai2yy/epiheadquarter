@@ -29,10 +29,12 @@
 - 插件: [extensions.py](backend/utils/extensions.py)
 - 其他工具：[utils.py](backend/utils/helper.py)
 ### 2. Frontend
-- 模板 [templates](frontend/templates)
-- 静态资源 [static](frontend/static)
-    - 首页 [templates/index.html](frontend/templates/index.html)
-    - 错误页面 [templates/errors/](frontend/templates/errors)
+- 客户端 [](myapp/web) 使用--> npm i && npm run serve
+- 后台管理 [](myapp/admin) 使用--> npm i && npm run serve
+  - 测试用后端代码 [](myapp/server) 使用--> npm i && npm run serve
+- 静态资源 [static](myapp/admin/dist && myapp/web/dist)
+    - 客户端首页 [dist/index.html](myapp/web/dist)
+    - 后台管理首页 [dist/index.html](myapp/admin/dist)
 
 ## Development Guide
 ### 1. Web Operations
