@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "392075",
+      "name": "ARROW",
+      "font_class": "arrow",
+      "unicode": "e664",
+      "unicode_decimal": 58980
+    }
+  ]
+}
